@@ -8,7 +8,7 @@ create table posts (
   created_at timestamptz default now()
 );
 
--- Row Level Security: the anon key may only read and insert.
+-- Row Level Security: the publishable key (anon role) may only read and insert.
 alter table public.posts enable row level security;
 
 create policy "anon read posts"

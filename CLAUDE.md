@@ -41,8 +41,9 @@ Run `npm run typecheck`, `npm run lint` and `npm test` before committing; run
   `src/lib/posts/queries.ts` is Supabase I/O only. Everything UI-shaped belongs in
   `src/components/**`.
 - **Supabase client** is `src/lib/supabase/client.ts` — a lazy singleton reading
-  only `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Never put a
-  service-role key in this repo.
+  only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  (the legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY` is accepted as a fallback). Never
+  put a secret/service key in this repo.
 - **The wall is one client component tree**: `src/components/wall/wall.tsx` owns
   posts / loading / error state; `post-composer.tsx`, `post-feed.tsx` and
   `post-card.tsx` are presentational. Do not add Context, Zustand or Redux.
@@ -66,8 +67,10 @@ create policy "anon insert" on public.posts for insert  to anon with check (true
 alter publication supabase_realtime add table public.posts;
 ```
 
-The anon key only ever gets SELECT + INSERT. Realtime needs the publication line.
-`.env.local` (gitignored) holds the two `NEXT_PUBLIC_*` vars.
+The publishable key maps to the `anon` role by default, so the `to anon` policies
+apply. It only ever gets SELECT + INSERT. Realtime needs the publication line.
+`.env.local` (gitignored) holds `NEXT_PUBLIC_SUPABASE_URL` and
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 
 ## Conventions
 

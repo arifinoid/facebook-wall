@@ -14,11 +14,12 @@ npm install
 ```
 
 Create a Supabase project, run [`supabase/schema.sql`](supabase/schema.sql) in
-its SQL Editor, then copy the project URL and anon key (Project Settings → API)
-into `.env.local`:
+its SQL Editor, then copy the project URL and publishable key (Project Settings
+→ API) into `.env.local`:
 
 ```bash
-cp .env.example .env.local
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 ```
 
 ```bash
@@ -41,5 +42,6 @@ npm run test:watch   # Vitest in watch mode
 
 ## Deploying
 
-Import the repository on Vercel, add the two `NEXT_PUBLIC_*` environment
-variables, and deploy. The production URL is the public entry point.
+Import the repository on Vercel, add `NEXT_PUBLIC_SUPABASE_URL` and
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and deploy. The production URL is the
+public entry point.

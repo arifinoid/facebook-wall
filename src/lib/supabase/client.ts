@@ -1,7 +1,11 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// Supabase now issues publishable keys (`sb_publishable_…`); the legacy anon
+// key (`eyJ…`) is still accepted as a fallback.
+const supabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 let cached: SupabaseClient | null = null;
 
@@ -14,14 +18,14 @@ export function getSupabase(): SupabaseClient {
     return cached;
   }
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl || !supabaseKey) {
     throw new Error(
       "Missing Supabase credentials. Set NEXT_PUBLIC_SUPABASE_URL and " +
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY in .env.local.",
     );
   }
 
-  cached = createClient(supabaseUrl, supabaseAnonKey, {
+  cached = createClient(supabaseUrl, supabaseKey, {
     auth: { persistSession: false },
   });
 
